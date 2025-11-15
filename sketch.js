@@ -5,7 +5,7 @@ let allnames, allnumbers, allcountry;
 let baseradius = 25;
 let maxradius = 450;
 let hoveredVolcano = null; // per salvare il vulcano sotto il mouse
- let legenda = [
+let legenda = [
   { type: "Stratovolcano", color: [255, 173, 177] },
   { type: "Caldera", color: [189, 178, 255] },
   { type: "Vulcano a scudo", color: [255, 214, 165] },
@@ -63,31 +63,29 @@ function draw() {
     let type = data.getString(i, "TypeCategory"); //questo mi serve per dare i colori
 
     // impostiamo i colori in base al tipo di vulcano
-    if (type === "Stratovolcano") {
-      fill(255, 173, 177); // rosso stratovolcano
-    } else if (type === "Caldera") {
-      fill(189, 178, 255); // viola
-    } else if (type === "Shield Volcano") {
-      fill(255, 214, 165); // arancione
-    } else if (type === "Submarine Volcano") {
-      fill(160, 196, 255); // blu
-    } else if (type === "Maars / Tuff ring") {
-      fill(255, 214, 165); // arancio
-    } else if (type === "Cone") {
-      fill(202, 255, 191); // verde 
-    } else if (type === "Crater System") {
-      fill(255, 198, 255); // rosa
-    } else if (type === "Subglacia") {
-      fill(155, 246, 255); // azzurro
-    } else if (type === "Other / Unknown") {
-      fill(128, 128, 128); // bianco
-    }
+    if (type === "Stratovolcano") fill(255, 173, 177); 
+    else if (type === "Caldera") fill(189, 178, 255); 
+    else if (type === "Shield Volcano") fill(255, 214, 165); 
+    else if (type === "Submarine Volcano") fill(160, 196, 255); 
+    else if (type === "Maars / Tuff ring") fill(255, 214, 165); 
+    else if (type === "Cone") fill(202, 255, 191); 
+    else if (type === "Crater System") fill(255, 198, 255); 
+    else if (type === "Subglacia") fill(155, 246, 255); 
+    else if (type === "Other / Unknown") fill(128, 128, 128); 
 
     // per il cerchio e il mouseover
-    let d = dist(mouseX, mouseY, x, y); //dist è una funzione p5 per calcolare la distanza tra due punti
+    let d = dist(mouseX, mouseY, x, y); 
     if (d < closestDist && d < 6) {
       closestDist = d;
       closestIndex = i;
+
+      // valorizzo hoveredVolcano per il click
+      hoveredVolcano = { 
+        number: allnumbers[i],
+        name: allnames[i],
+        country: allcountry[i],
+        elevation: allelevation[i]
+      };
     }
 
     ellipse(x, y, 6); // disegna tutti i pallini piccoli
@@ -101,32 +99,8 @@ function draw() {
     let x = cos(angle) * radius + width/2;
     let y = sin(angle) * radius + height/2;
 
-    let type = data.getString(closestIndex, "TypeCategory");
-
-
     fill(255);
     ellipse(x, y, 15); // ingrandisci solo questo pallino
-
-
-  }
-
-  // se c’è un vulcano sotto il mouse, scriviamo le info nel pannello
-  if (hoveredVolcano) {
-    fill(210, 50); // rettangolo semitrasparente
-    noStroke();
-    rect(width - 350, 80, 250, 120, 10); // rettangolo arrotondato con posizione e grandezza
-
-    fill(255);
-    textSize(15);
-    textAlign(LEFT, TOP);
-    text(
-      hoveredVolcano.name + "\n" +
-      "Number: " + hoveredVolcano.number + "\n" +
-      "Elevation: " + hoveredVolcano.elevation + " m\n" +
-      "Country: " + hoveredVolcano.country,
-      width - 330,
-      105
-    );
   }
 
   // disegniamo i cerchi concentrici per i metri
@@ -147,9 +121,8 @@ function draw() {
   }
 
   //INIZIO A DISEGNARE LA LEGENDA
-
-    let startX = width - 330; // 200 px dal bordo destro
-    let startY = height / 2 - (legenda.length * 20) / 2;
+  let startX = width - 330; // 200 px dal bordo destro
+  let startY = height / 2 - (legenda.length * 20) / 2;
 
   for (let c = 0; c < legenda.length; c++) {
     let yLegenda = startY + c * 25; // distanza tra le righe
@@ -160,23 +133,19 @@ function draw() {
     text(legenda[c].type, startX + 20, yLegenda);
   }
 
-
   noStroke();
-fill(255);
-textAlign(LEFT, TOP);
-textSize(22);
-text("esercitazione 3", 30, 30);
-
-
-// -----------------------------
-// Funzione che gestisce il click del mouse
-// -----------------------------
-function mousePressed() { 
-  // Se l’utente sta hoverando un vulcano, apri la pagina di dettaglio e passa il numero "univoco" 
-  if (hoveredVolcano) { 
-    // Puoi passare altri parametri se vuoi, basta aggiungerli all’URL 
-    window.location.href = "indexdettaglio.html?number=" + encodeURIComponent(hoveredVolcano.number); 
-  } 
-  // Se non c’è un vulcano sotto il mouse, non fai nulla
+  fill(255);
+  textAlign(LEFT, TOP);
+  textSize(22);
+  text("esercitazione 3", 30, 30);
 }
+
+// Funzione che gestisce il click del mouse
+function mousePressed() {
+  // Se l’utente sta hoverando un vulcano, apri la pagina di dettaglio e passa il numero "univoco"
+  if (hoveredVolcano) {
+    // Passo il numero all’altra pagina
+    window.location.href = "indexdettaglio.html?number=" + encodeURIComponent(hoveredVolcano.number);
+  }
+  // Se non c’è un vulcano sotto il mouse, non fai nulla
 }
