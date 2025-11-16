@@ -61,18 +61,18 @@ function draw() {
 
   if (!hoveredVolcano) return; // se non c'è vulcano valido, esci
 
-  // 1️⃣ Mostra l'immagine di sfondo del tipo di vulcano
+  // Mostra l'immagine di sfondo del tipo di vulcano
   let img = images[hoveredVolcano.type];
   if (img) {
     image(img, 0, 0, width, height);
   }
 
-  // 2️⃣ Overlay nero 
+  // Overlay nero 
   noStroke();
   fill(0, 200);
   rect(0, 0, width, height);
 
-  // 3️⃣ CERCHI CON COLORI BASATI SULL'ERUZIONE
+  // CERCHI CON COLORI BASATI SULL'ERUZIONE
   let centerX = width / 2;
   let centerY = height / 2;
   let baseRadius = 80;
@@ -101,10 +101,10 @@ function draw() {
     ellipse(centerX, centerY, (baseRadius + i * stepRadius) * 2);
   }
 
-  // 4️⃣ FRECCIA BACK VERSO SINISTRA
+  //  FRECCIA BACK VERSO SINISTRA
   drawBackArrow();
 
-  // 5️⃣ TESTO INFORMATIVO AGGIORNATO
+  // TESTO INFORMATIVO 
   textAlign(RIGHT, TOP);
   fill(255);
   textSize(40);
@@ -121,7 +121,7 @@ function draw() {
     150
   );
 
-  // 6️⃣ LEGENDA INFOGRAFICA IN BASSO A DESTRA
+  // LEGENDA INFOGRAFICA IN BASSO A DESTRA
   drawInfoLegend();
 }
 
@@ -193,6 +193,7 @@ function drawInfoLegend() {
   }
 
   fill(255);
+  noStroke();
   textSize(12);
   text("CIRCLES → Elevation", x + 40, circlesY - 10);
   textSize(10);
